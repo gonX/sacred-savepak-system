@@ -24,7 +24,7 @@ class SacredSaveStruct2Enum(Enum):
     ITEMS_C = 160 # compressed
     QUEST_C = 161 # compressed
     PARTICLES_C = 162 # compressed
-    ENDING_likely = 195 # always 0 value, and always at end?
+    ENDING_likely = 195 # value 0 if no hero data, and always at end?
 
     @classmethod
     def _missing_(cls, value):
@@ -32,3 +32,6 @@ class SacredSaveStruct2Enum(Enum):
 
     def __repr__(self):
         return f'{self.name}'
+
+    def __str__(self):
+        return self.__repr__()
