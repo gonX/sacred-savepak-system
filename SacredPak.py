@@ -33,12 +33,34 @@ class SacredPak:
                 struct.unpack(self.DATE_FORMAT_STRUCT, self.firstHeaderBytes[self.DATE_OFFSET:self.DATE_END])
         self.date = dt.datetime(year + 1900, month, day, hour, minute, second, ms * 1000)
 
+    def getChecksum(self):
+        return list(struct.unpack('IIIIII', self.firstHeaderBytes[0xe8:0x100]))
+
     def verify_pak_header(self):
         return self.header == 'AMS' # sacred underworld 2.28 emits this
 
-    def print_pak(self):
-        print("pak print start:")
+    def verify_checksum(self):
+        """checksum format:
+                # main checksum
+                checksum0 = foo;
+                checksum1 = bar;
+                checksum2 = baz;
+                checksum3 = bar ^ baz;
+                # rng-seeded checksum:
+                checksum4 = 1 + 0x270e * (rand() * (float)0x30000000)
+                checksum5 = checksum4 ^ checksum1
+        """
+        checksums = self.getChecksum()
 
+        if not checksums[5] == (checksums[4] ^ checksums[1]):
+            print("rng checksum mismatch") # TODO: remove print statement closer to release (or use debug logging)
+            return False
+
+        print("base checksum check unimplemented")
+        return False # TODO: verify main checksum
+        return True
+
+    def print_pak(self):
         success = True
 
         success |= self.verify_pak_header()
@@ -46,5 +68,8 @@ class SacredPak:
 
         print(f"save date: {self.date}")
 
-        print(f"saveStruct2:")
         self.sss2.dumpSaveStruct2();
+
+        checksum_result = self.verify_checksum()
+        print(f"checksum %s" % ("OK" if checksum_result else "fail"))
+        success &= checksum_result
