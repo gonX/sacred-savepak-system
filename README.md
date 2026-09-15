@@ -17,13 +17,13 @@ Initially this will just dump some information available in this file
 
 ### Checksum
 
-The save file contains a checksum, so directly editing bytes beyond the first 256 bytes isn't going to work.
+One would think that the checksum is actually useful - but in our case it's
+not. You can seemingly edit the file without issues - at least I was able to
+change the difficulty field of my game and artificially inflate it to whatever
+I wanted.
 
 The checksum bytes are placed at the last 48 bytes of the first 256 bytes, of which these 48 bytes are:
 - 4x 8 bytes contains the main checksum - they have a simple algorithm run over them based on the entire remaining contents of the save file
 - the last 16 bytes are seeded randomly, the first of the 8 contains the seed, and the last of the 8 contains `checksum2 ^ seed`
 
-This is expected to be provided as a part of the programming API
-
-> Being able to fix up the checksum for an edited file might come later as part of this project.
-
+Unless there is evidence that the checksum is relevant, this project will not further attempt to recover the original checksum.

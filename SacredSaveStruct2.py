@@ -4,10 +4,11 @@ import Enums
 
 class SacredSaveStruct2:
     """Class responsible for handing the saveBuffer[0x100-0x400] section"""
+    EXPECTED_SIZE = 0x300
     STRIDE = 12
 
     def __init__(self, buffer):
-        if len(buffer) != 0x300: raise Exception("unexpected buffer size") # theoretically as long as its divisible by 12 it should work
+        if len(buffer) != self.EXPECTED_SIZE: raise Exception("unexpected buffer size") # theoretically as long as its divisible by 12 it should work
         self.buffer = buffer
 
     @staticmethod
