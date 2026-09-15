@@ -63,8 +63,9 @@ class SacredPak:
     def print_pak(self):
         success = True
 
-        success |= self.verify_pak_header()
-        print(f"header %s ({self.header})" % ("OK" if success else "fail"))
+        verify_pak_header_result = self.verify_pak_header()
+        success &= verify_pak_header_result
+        print(f"header %s ({self.header})" % ("OK" if verify_pak_header_result else "fail"))
 
         print(f"save date: {self.date}")
 
