@@ -6,6 +6,7 @@ import SacredPak as sp
 
 if __name__ == "__main__":
     with sp.SacredPak(PAKNAME) as i:
+        print(f"opened {PAKNAME}")
         if not (i.verify_pak_header()):
             print("not a valid pak?")
             exit(1)

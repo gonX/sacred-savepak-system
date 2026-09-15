@@ -3,6 +3,7 @@ import struct
 import Enums
 
 class SacredSaveStruct2:
+    """Class responsible for handing the saveBuffer[0x100-0x400] section"""
     STRIDE = 12
 
     def __init__(self, buffer):
@@ -12,7 +13,11 @@ class SacredSaveStruct2:
     @staticmethod
     def getSaveStruct2object(buffer):
         (i, readIndex, value) = struct.unpack("iii", buffer)
-        return { "id": i, "idStr": Enums.SacredSaveStruct2Enum(i), "readIndex": readIndex, "value": value }
+        return { "id": i,
+                 "idStr": Enums.SacredSaveStruct2Enum(i),
+                 "readIndex": readIndex,
+                 "value": value,
+        }
 
     def getSaveStruct2objects(self):
         """Gets all non-null objects from string"""
